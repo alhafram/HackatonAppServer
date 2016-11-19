@@ -1,6 +1,5 @@
 'use strict';
 
 module.exports = [
-  './routes',
-  './categories'
+  './routes'
 ].map(require);
