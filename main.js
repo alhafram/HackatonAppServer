@@ -7,6 +7,8 @@ logging = logging.for('Main');
 
 let Server = require('./src/server');
 let database = require('./src/database');
+let getApiHandler = require('./src/httpApi');
+let getStaticHandler = require('./src/staticContentServer');
 
 
 process.on('uncaughtException', error => {
@@ -19,7 +21,13 @@ logging.info('Loaded libraries, connecting to database');
 
 database.getDatabase(config.database).then(database => {
   logging.info('Database connection ok, creating HTTP server');
-  return new Server(database).listen(config.http.port);
+
+  const subApps = {
+    "/api": getApiHandler(database, config),
+    [config.static.path]: getStaticHandler(config.static.directories)
+  };
+
+  return new Server(database, subApps).listen(config.http.port);
 }).then(() => {
   logging.info(`Server listening at ${config.http.port}`);
 }).catch(error => {

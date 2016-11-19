@@ -1,13 +1,13 @@
 'use strict';
 
 let BaseHandler = require('./baseHandler');
-const picBaseUrl = 'http://54.186.218.70:8000/pics/';
 
 
 class RoutesListHandler extends BaseHandler {
-  constructor (database) {
+  constructor (database, config) {
     super('get', '/routes');
     this.database = database;
+    this.staticBaseUrl = config.static.path;
   }
 
   handlerFunction (req) {
@@ -57,7 +57,7 @@ class RoutesListHandler extends BaseHandler {
             name: point.name,
             coordinates: point.latitude+','+point.longitude,
             time: point.time,
-            pinPicture: picBaseUrl + point.PinPicture.filename
+            pinPicture: this.staticBaseUrl + point.PinPicture.filename
           };
           return point.id;
         });
@@ -65,7 +65,7 @@ class RoutesListHandler extends BaseHandler {
         let picIds = result.Pictures.map(picture => {
           pictures[picture.id] = {
             id: picture.id,
-            url: picBaseUrl + picture.filename
+            url: this.staticBaseUrl + picture.filename
           };
           return picture.id;
         });
@@ -80,7 +80,7 @@ class RoutesListHandler extends BaseHandler {
           points: pointIds,
           pictures: picIds,
           categories: catIds,
-          cover: picBaseUrl + result.Cover.filename
+          cover: this.staticBaseUrl + result.Cover.filename
         };
       });
 
