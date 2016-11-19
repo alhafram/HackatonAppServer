@@ -11,13 +11,21 @@ class RoutesListHandler extends BaseHandler {
   }
 
   handlerFunction (req) {
-    let where;
+    function toNumberArray(param) {
+      return param.split(',').map(n => parseInt(n)).filter(id => !isNaN(id));
+    }
+
+    let categoryFilter, routeFilter;
     if(req.query.categories) {
-      where = {
-        id: req.query.categories
-          .split(',')
-          .map(parseInt)
-          .filter(id => !isNaN(id))
+      categoryFilter = {
+        id: toNumberArray(req.query.categories)
+      };
+    }
+    if(req.query.alreadySaved) {
+      routeFilter = {
+        id: {
+          $notIn: toNumberArray(req.query.alreadySaved)
+        }
       };
     }
 
@@ -35,9 +43,10 @@ class RoutesListHandler extends BaseHandler {
         { all: true, nested: true },
         {
           model: this.database.models.Category,
-          where
+          where: categoryFilter
         }
-      ]
+      ],
+      where: routeFilter
     }).then(result => {
       // Приводим объекты к чистому JSON (без методов/свойств от sequelize)
       result.forEach(result => {
