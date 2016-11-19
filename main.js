@@ -2,12 +2,12 @@
 
 let config = require('./config.json');
 let logging = require('./src/logging');
+logging.initialize(config.logging);
+logging = logging.for('Main');
+
 let Server = require('./src/server');
 let database = require('./src/database');
 
-
-logging.initialize(config.logging);
-logging = logging.for('Main');
 
 process.on('uncaughtException', error => {
   logging.error('Uncaught exception, exiting!');

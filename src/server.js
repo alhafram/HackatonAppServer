@@ -2,60 +2,43 @@
 
 let express = require('express');
 let Promise = require('bluebird');
+let handlers = require('./handlers');
+let logging = require('./logging').for('Server');
 
 
 // Обертка над Express-приложением
 class Server {
-  constructor () {
+  constructor (database) {
     this.app = express();
-    this.app.get('/routes', (req, res) => {
-      res.json({
-        "routes": [
-          {
-            "id": 1,
-            "name": "Прогулка по центру",
-            "duration": 3,
-            "description": "Awesome route",
-            "rating": 4.7,
-            "price": 1000,
-            "points": [1, 2],
-            "categories": [1, 3],
-            "pictures": [
-              "http://s3.amazonaws.com/abcd/l9k2dd.jpg",
-              "http://s3.amazonaws.com/abcd/fj82a2.jpg",
-              "http://s3.amazonaws.com/abcd/8ck382.jpg"
-            ]
-          },
-        ],
-        "points": [
-          {
-            "id": 1,
-            "name": "Кафе *название*",
-            "coordinates": "59.123,30.456",
-            "time": "11:00-23:00",
-            "pinPicture": "http://s3.amazonaws.com/abcd/fj82a2.jpg"
-          }
-        ]
-      });
-    });
-    this.app.get('/categories', (req, res) => {
-      res.json({
-        "categories": [
-          {
-            "id": 1,
-            "name": "Для плохой погоды"
-          },
-          {
-            "id": 2,
-            "name": "Центр города"
-          }
-        ]
-      });
+    this.database = database;
+    handlers.forEach(Handler => {
+      let handler = new Handler(database);
+      let method = handler.method;
+      let path = handler.path;
+      let fn = Server.wrapHandlerFunction(handler);
+
+      this.app[method](path, fn);
+
+      logging.verbose(`Attached handler for ${method} ${path}`);
     });
   }
 
   listen (port) {
     return new Promise(resolve => this.app.listen(port, resolve));
+  }
+
+  // Оборачиваем handler function, ловим ошибки из промисов
+  static wrapHandlerFunction (handler) {
+    return (req, res) => {
+      handler.handlerFunction(req).then(result => {
+        res.json(result);
+      }).catch(error => {
+        logging.error('Error during processing request!');
+        logging.error(error);
+
+        res.sendStatus(500);
+      });
+    };
   }
 }
 
