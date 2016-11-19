@@ -1,4 +1,13 @@
 {
+  "database": {
+    "dialect": "postgres",
+    "host": "localhost",
+    "maxConnections": 100,
+    "name": "hackrussia",
+    "password": "123456",
+    "socketPath": "/remove/this/if/connecting/over/network",
+    "username": "hackrussia"
+  },
   "http": {
     "port": 8000
   },

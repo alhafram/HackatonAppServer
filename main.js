@@ -1,6 +1,9 @@
+'use strict';
+
 let config = require('./config.json');
 let logging = require('./src/logging');
 let Server = require('./src/server');
+let database = require('./src/database');
 
 
 logging.initialize(config.logging);
@@ -12,6 +15,16 @@ process.on('uncaughtException', error => {
   process.exit(1);
 });
 
-new Server().listen(config.http.port).then(() => {
+logging.info('Loaded libraries, connecting to database');
+
+database.getDatabase(config.database).then(database => {
+  logging.info('Database connection ok, creating HTTP server');
+  return new Server(database).listen(config.http.port);
+}).then(() => {
   logging.info(`Server listening at ${config.http.port}`);
+}).catch(error => {
+  logging.error('Failed to start server!');
+  logging.error(error);
+
+  process.exit(1);
 });
