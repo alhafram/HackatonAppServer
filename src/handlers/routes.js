@@ -32,7 +32,7 @@ class RoutesListHandler extends BaseHandler {
 
     return this.database.models.Route.findAll({
       include: [
-        { all: true },
+        { all: true, nested: true },
         {
           model: this.database.models.Category,
           where
@@ -57,7 +57,7 @@ class RoutesListHandler extends BaseHandler {
             name: point.name,
             coordinates: point.latitude+','+point.longitude,
             time: point.time,
-            pinPicture: point.PinPictureId
+            pinPicture: picBaseUrl + point.PinPicture.filename
           };
           return point.id;
         });
