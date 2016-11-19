@@ -1,0 +1,16 @@
+{
+  "http": {
+    "port": 8000
+  },
+  "logging": [
+    {
+      "level": "verbose",
+      "type": "console"
+    },
+    {
+      "level": "verbose",
+      "type": "file",
+      "path": "/var/log/logfile.log"
+    }
+  ]
+}

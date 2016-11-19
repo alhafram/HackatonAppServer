@@ -2,7 +2,7 @@
   "name": "hackathon-app",
   "version": "0.0.1",
   "description": "Walk routes app backend",
-  "main": "main.js",
+  "main": "src/main.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -14,5 +14,12 @@
     "url": "https://github.com/alhafram/HackatonAppServer/issues"
   },
   "homepage": "https://github.com/alhafram/HackatonAppServer#readme",
-  "private": true
+  "private": true,
+  "dependencies": {
+    "bluebird": "3.4.6",
+    "express": "4.14.0",
+    "pg": "6.1.0",
+    "sequelize": "3.27.0",
+    "winston": "2.3.0"
+  }
 }
