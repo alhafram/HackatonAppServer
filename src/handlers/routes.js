@@ -14,7 +14,7 @@ class RoutesListHandler extends BaseHandler {
     let where;
     if(req.query.categories) {
       where = {
-        CategoryId: req.query.categories
+        id: req.query.categories
           .split(',')
           .map(parseInt)
           .filter(id => !isNaN(id))
