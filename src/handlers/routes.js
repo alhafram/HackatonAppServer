@@ -80,7 +80,7 @@ class RoutesListHandler extends BaseHandler {
           points: pointIds,
           pictures: picIds,
           categories: catIds,
-          cover: result.Cover.id
+          cover: picBaseUrl + result.Cover.filename
         };
       });
 
