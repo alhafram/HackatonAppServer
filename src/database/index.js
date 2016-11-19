@@ -15,6 +15,10 @@ function createConnection(options) {
   let opts = {
     host: options.host,
 
+    define: {
+      timestamps: false // Убираем createdAt updatedAt
+    },
+
     dialect: options.dialect,
     dialectOptions: dialectOpts,
 

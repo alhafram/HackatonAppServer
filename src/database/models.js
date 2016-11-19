@@ -49,11 +49,23 @@ function defineModels(database) {
   });
 
   // Связи, foreign keys
-  Route.belongsToMany(Category, { through: 'RouteCategory' });
-  Category.belongsToMany(Route, { through: 'RouteCategory' });
+  Route.belongsToMany(Category, {
+    onDelete: 'cascade',
+    through: 'RouteCategory'
+  });
+  Category.belongsToMany(Route, {
+    onDelete: 'cascade',
+    through: 'RouteCategory'
+  });
 
-  Route.belongsToMany(Point, { through: 'RoutePoint' });
-  Point.belongsToMany(Route, { through: 'RoutePoint' });
+  Route.belongsToMany(Point, {
+    onDelete: 'cascade',
+    through: 'RoutePoint'
+  });
+  Point.belongsToMany(Route, {
+    onDelete: 'cascade',
+    through: 'RoutePoint'
+  });
 
   Route.belongsToMany(Picture, { through: 'RoutePicture' });
   Picture.belongsToMany(Route, { through: 'RoutePicture' });
