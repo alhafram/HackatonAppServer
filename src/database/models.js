@@ -58,8 +58,8 @@ function defineModels(database) {
   Route.belongsToMany(Picture, { through: 'RoutePicture' });
   Picture.belongsToMany(Route, { through: 'RoutePicture' });
 
-  Route.hasOne(Picture, { as: 'Cover' });
-  Point.hasOne(Picture, { as: 'PinPicture' });
+  Route.belongsTo(Picture, { as: 'Cover' });
+  Point.belongsTo(Picture, { as: 'PinPicture' });
 }
 
 module.exports = { defineModels };
