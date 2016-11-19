@@ -24,6 +24,7 @@
   ],
   "static": {
     "directories": ["dir1", "dir2"],
+    "downloadPath": "http://example.com/static",
     "path": "/static"
   }
 }

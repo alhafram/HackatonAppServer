@@ -7,7 +7,7 @@ class RoutesListHandler extends BaseHandler {
   constructor (database, config) {
     super('get', '/routes');
     this.database = database;
-    this.staticBaseUrl = config.static.path;
+    this.staticBaseUrl = config.static.downloadPath;
   }
 
   handlerFunction (req) {
