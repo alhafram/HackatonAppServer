@@ -43,6 +43,7 @@ class WinstonLoggerWrapper {
         level: transport.level || 'silly',
         formatter: this.constructor.format,
         json: false,
+        filename: transport.path
       });
     });
   }
