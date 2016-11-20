@@ -12,7 +12,7 @@ function defineModels(database) {
       primaryKey: true
     },
     name: Sequelize.STRING,
-    description: Sequelize.STRING,
+    description: Sequelize.TEXT,
     rating: Sequelize.FLOAT, // TODO: временно, заменить на сумму + кол-во оценок
     duration: Sequelize.FLOAT, // В часах
     price: Sequelize.INTEGER
